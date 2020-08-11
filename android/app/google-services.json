@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "938504321793",
+    "firebase_url": "https://surveyapp-flutter.firebaseio.com",
+    "project_id": "surveyapp-flutter",
+    "storage_bucket": "surveyapp-flutter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:938504321793:android:9d7043cf2be8a46016f900",
+        "android_client_info": {
+          "package_name": "me.aakashjangid.flutter_survey"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "938504321793-o28fsts3c9hj99l2os68hpc9325lgguo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsv-2CyGI76cs4iG-cnOjKPOwWV_YPAB0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "938504321793-o28fsts3c9hj99l2os68hpc9325lgguo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:938504321793:android:034e3b031b088e9116f900",
+        "android_client_info": {
+          "package_name": "me.aakashjangid.survey_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "938504321793-o28fsts3c9hj99l2os68hpc9325lgguo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsv-2CyGI76cs4iG-cnOjKPOwWV_YPAB0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "938504321793-o28fsts3c9hj99l2os68hpc9325lgguo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
