@@ -1,11 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_survey/models/service.dart';
 import 'package:flutter_survey/providers/provider.dart';
 import 'package:flutter_survey/widgets/question_counter.dart';
 import 'package:flutter_survey/widgets/answer_list.dart';
 import 'package:flutter_survey/widgets/question_text.dart';
 import 'package:flutter_survey/widgets/round_button.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -26,8 +26,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   _asyncMethod() async {
-    Provider.of<QuestionState>(context, listen: false).clearSelection();
-    Provider.of<QuestionState>(context, listen: false).loadQuestionsList();
+    Provider.of<BaseProvider>(context, listen: false).clearSelection();
+    Provider.of<BaseProvider>(context, listen: false).loadQuestionsList();
   }
 
   @override
@@ -42,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: <Widget>[
           //Todo : Change icons fontAwesome lib
           IconButton(
-              icon: const Icon(Icons.home),
+              icon: const Icon(FontAwesomeIcons.signOutAlt),
               onPressed: () {
                 _signOut();
               }),
@@ -65,36 +65,37 @@ Widget homeScreenBody(context) {
     child: SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          Consumer<QuestionState>(
+          Consumer<BaseProvider>(
             builder: (context, value, child) => SingleChildScrollView(
-                          child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    //
-                    RoundButon(
-                      title: 'back',
-                      width: 100,
-                      onPressed: value.currentIndex == 0
-                          ? null
-                          : () {
-              onPressedBackButton(context);
-                            },
-                    ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  //
+                  RoundButon(
+                    title: 'back',
+                    width: 100,
+                    onPressed: value.currentIndex == 0
+                        ? null
+                        : () {
+                            onPressedBackButton(context);
+                          },
+                  ),
 
-                    SizedBox(width: 50),
+                  SizedBox(width: 50),
 
-                    //heading Maybe
-                    OutOfCounter(),
-                  ],
-                ),
+                  //heading Maybe
+                  OutOfCounter(),
+                ],
+              ),
             ),
           ),
 
-          Divider(),
-
-          SizedBox(
-            height: 16
+          Divider(
+            thickness: 1,
+            height: 30,
           ),
+
+          SizedBox(height: 30),
 
           Card(
             elevation: 5.0,
@@ -113,9 +114,9 @@ Widget homeScreenBody(context) {
             ),
           ),
 
-          SizedBox(height: 20),
+          SizedBox(height: 100),
 
-          Consumer<QuestionState>(
+          Consumer<BaseProvider>(
             builder: (context, value, child) => RoundButon(
               title: value.currentIndex == (value.questions.length - 1)
                   ? "Submit"
@@ -134,12 +135,12 @@ Widget homeScreenBody(context) {
 
 //
 void onPressedBackButton(context) {
-  Provider.of<QuestionState>(context, listen: false).lastIndex();
+  Provider.of<BaseProvider>(context, listen: false).lastIndex();
 }
 
 //
 void onPressedSubmitButton(context) {
-  QuestionState data = Provider.of<QuestionState>(context, listen: false);
+  BaseProvider data = Provider.of<BaseProvider>(context, listen: false);
 
   if (data.answers[data.currentIndex] == null) {
     Scaffold.of(context).showSnackBar(SnackBar(

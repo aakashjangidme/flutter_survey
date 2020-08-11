@@ -38,8 +38,8 @@ class _ResultScreenState extends State<ResultScreen> {
               },
             ),
             SizedBox(height: 20),
-            RoundButon(
-              title: 'Sign Out',
+            FlatButton(
+              child: Text('Sign Out'),
               onPressed: () {
                 Navigator.pushReplacementNamed(context, '/');
               },

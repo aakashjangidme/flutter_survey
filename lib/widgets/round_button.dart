@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 class RoundButon extends StatelessWidget {
-  RoundButon({@required this.title, this.width = 150, this.onPressed});
+  RoundButon({@required this.title, this.width = 125, this.onPressed});
   final String title;
   final double width;
   final Function onPressed;

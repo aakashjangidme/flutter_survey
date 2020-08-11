@@ -6,10 +6,10 @@ import 'package:provider/provider.dart';
 class AnswerList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    QuestionState data = Provider.of<QuestionState>(context, listen: false);
+    BaseProvider data = Provider.of<BaseProvider>(context, listen: false);
     return SizedBox(
       height: 250,
-      child: Consumer<QuestionState>(
+      child: Consumer<BaseProvider>(
         builder: (context, ques, child) => ListView(
           padding: EdgeInsets.all(8.0),
           children: ques.questions[ques.currentIndex].answerText

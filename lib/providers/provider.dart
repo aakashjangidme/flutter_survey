@@ -5,7 +5,7 @@ import 'package:flutter_survey/models/service.dart';
 //
 //Provider for  Question State Mgmt
 
-class QuestionState with ChangeNotifier {
+class BaseProvider with ChangeNotifier {
   List<QuestionModel> _questions;
   Map<int, dynamic> _answers = {};
   int currentIndex = 0;

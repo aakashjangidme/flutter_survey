@@ -5,12 +5,12 @@ import 'package:provider/provider.dart';
 class QuestionText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Consumer<QuestionState>(
+    return Consumer<BaseProvider>(
       builder: (context, ques, child) => Container(
         padding: EdgeInsets.only(top: 32),
         child: Text(
           ques.questions[ques.currentIndex].questionText,
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+          style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
           textAlign: TextAlign.center,
         ),
       ),

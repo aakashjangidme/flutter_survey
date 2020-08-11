@@ -9,7 +9,7 @@ class OutOfCounter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Consumer<QuestionState>(
+      child: Consumer<BaseProvider>(
         builder: (context, value, child) => Text(
           '${value.currentIndex + 1} out of ${value.questions.length}',
           style: TextStyle(

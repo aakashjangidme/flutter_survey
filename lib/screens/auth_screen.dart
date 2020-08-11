@@ -1,6 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_survey/constants/constants.dart';
 import 'package:flutter_survey/providers/provider.dart';
+import 'package:flutter_survey/widgets/round_button.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class AuthScreen extends StatefulWidget {
@@ -58,78 +61,112 @@ class _EmailPasswordFormState extends State<_EmailPasswordForm> {
   //
   @override
   Widget build(BuildContext context) {
-    Provider.of<QuestionState>(context, listen: false).loadQuestionsList();
+    Provider.of<BaseProvider>(context, listen: false).loadQuestionsList();
 
     return Form(
       key: _formKey,
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              child: _formType == FormType.login
-                  ? const Text('Login with Email and Password')
-                  : Text('Register'),
-              padding: const EdgeInsets.all(16),
-              alignment: Alignment.center,
-            ),
-            TextFormField(
-              controller: _emailController,
-              decoration: const InputDecoration(labelText: 'Email'),
-              validator: (String value) {
-                if (value.isEmpty) {
-                  return 'Please enter some text';
-                }
-                return null;
-              },
-            ),
-            TextFormField(
-              controller: _passwordController,
-              decoration: const InputDecoration(labelText: 'Password'),
-              validator: (String value) {
-                if (value.isEmpty) {
-                  return 'Please enter some text';
-                }
-                return null;
-              },
-            ),
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              alignment: Alignment.center,
-              child: RaisedButton(
-                onPressed: () async {
-                  //
-                  if (_formKey.currentState.validate()) {
+      child: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          padding: const EdgeInsets.all(16),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  child: Column(
+                    children: <Widget>[
+                      Text(
+                        _formType == FormType.login
+                            ? 'Sign In to Continue'
+                            : 'Please, Register to Continue',
+                        style: GoogleFonts.raleway(
+                          fontSize: 28,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 20),
+                      Text(
+                        'Enter your email and password below to continue to the The Survey App!',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 14),
+                      ),
+                      SizedBox(
+                        height: 50,
+                      ),
+                    ],
+                  ),
+                  padding: const EdgeInsets.all(16),
+                  alignment: Alignment.center,
+                ),
+                TextFormField(
+                  controller: _emailController,
+                  decoration: const InputDecoration(labelText: 'Email'),
+                  validator: (String value) {
+                    if (value.isEmpty) {
+                      return 'Please enter some text';
+                    }
+                    return null;
+                  },
+                ),
+                // SizedBox(height: 20),
+                TextFormField(
+                  controller: _passwordController,
+                  obscureText: true,
+                  decoration: const InputDecoration(labelText: 'Password'),
+                  validator: (String value) {
+                    if (value.isEmpty) {
+                      return 'Please enter some text';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 20),
+
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  alignment: Alignment.center,
+                  child: RoundButon(
+                    onPressed: () async {
+                      //
+                      if (_formKey.currentState.validate()) {
+                        _formType == FormType.login
+                            ? _signInWithEmailAndPassword()
+                            : _register();
+                        //
+                      }
+                      FocusScope.of(context).unfocus();
+                    },
+                    title: _formType == FormType.login ? 'Login' : 'Register',
+                  ),
+                ),
+
+                Text('Not Registered?'),
+
+                FlatButton(
+                  hoverColor: kPrimaryColor,
+                  onPressed: () {
                     _formType == FormType.login
-                        ? _signInWithEmailAndPassword()
-                        : _register();
-                    //
-                  }
-                },
-                child: Text(_formType == FormType.login ? 'Login' : 'Register'),
-              ),
+                        ? registerWidget()
+                        : loginWidget();
+                  },
+                  child:
+                      Text(_formType == FormType.login ? 'Sign Up' : 'Log In'),
+                ),
+                SizedBox(
+                  height: 100,
+                ),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: _buildFooter(),
+                )
+              ],
             ),
-            Container(
-              alignment: Alignment.center,
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Text(
-                _success == null
-                    ? ''
-                    : (_success
-                        ? 'Successfully signed in as ' + _userEmail
-                        : 'Sign in failed'),
-                style: TextStyle(color: Colors.red),
-              ),
-            ),
-            FlatButton(
-                onPressed: () {
-                  _formType == FormType.login
-                      ? registerWidget()
-                      : loginWidget();
-                },
-                child: Text(_formType == FormType.login ? 'Sign Up' : 'Log In'))
-          ],
+          ),
         ),
       ),
     );
@@ -199,4 +236,19 @@ class _EmailPasswordFormState extends State<_EmailPasswordForm> {
       _success = false;
     }
   }
+}
+
+_buildFooter() {
+  return Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    crossAxisAlignment: CrossAxisAlignment.center,
+    children: <Widget>[
+      Text(
+        'The Survey App',
+        textAlign: TextAlign.center,
+        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+      ),
+      Text('\n© 2020 Survey App'),
+    ],
+  );
 }

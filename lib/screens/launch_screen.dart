@@ -18,32 +18,35 @@ class LaunchScreen extends StatelessWidget {
 
 Widget launchScreen(context) {
   return Container(
-    width: double.infinity,
+    height: MediaQuery.of(context).size.height,
+    width: MediaQuery.of(context).size.width,
     margin: const EdgeInsets.all(16),
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        RichText(
+        ClipOval(
+          child: Image.asset(
+            'assets/images/welcome.png',
+            height: 200,
+            width: 200,
+            fit: BoxFit.cover,
+          ),
+        ),
+        SizedBox(height: 20),
+        Text(
+          'Welcome to the Survey App !',
           textAlign: TextAlign.center,
-          text: TextSpan(
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 36,
-              ),
-              children: <TextSpan>[
-                TextSpan(
-                  text: 'Welcome',
-                ),
-                TextSpan(text: ' to'),
-                TextSpan(
-                  text: '\nThe Survey',
-                  style: TextStyle(
-                    fontSize: 28,
-                    color: kPrimaryColor,
-                  ),
-                ),
-              ]),
+          style: TextStyle(fontSize: 28),
+        ),
+        SizedBox(height: 20),
+        Text(
+          'This app can be intigrated as a module to another app!',
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 16),
+        ),
+        SizedBox(
+          height: 30,
         ),
         SizedBox(height: 20),
         RoundButon(
@@ -57,5 +60,5 @@ Widget launchScreen(context) {
 }
 
 void authScreen(context) {
-  Navigator.pushReplacementNamed(context, '/auth');
+  Navigator.pushNamed(context, '/auth');
 }

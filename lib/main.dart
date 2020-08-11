@@ -5,6 +5,7 @@ import 'package:flutter_survey/screens/home_screen.dart';
 import 'package:flutter_survey/screens/launch_screen.dart';
 import 'package:flutter_survey/providers/provider.dart';
 import 'package:flutter_survey/screens/results_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 void main() => runApp(CounterApp());
@@ -15,7 +16,7 @@ class CounterApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => QuestionState(),
+          create: (_) => BaseProvider(),
         ),
       ],
       child: MaterialApp(
@@ -29,6 +30,9 @@ class CounterApp extends StatelessWidget {
               borderRadius: BorderRadius.circular(20.0),
             ),
             textTheme: ButtonTextTheme.primary,
+          ),
+          textTheme: GoogleFonts.ralewayTextTheme(
+            Theme.of(context).textTheme,
           ),
         ),
         initialRoute: "/",
