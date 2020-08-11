@@ -9,7 +9,7 @@ class QuestionText extends StatelessWidget {
       builder: (context, ques, child) => Container(
         padding: EdgeInsets.only(top: 32),
         child: Text(
-          ques.questions[ques.currentIndex].questiontext,
+          ques.questions[ques.currentIndex].questionText,
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
           textAlign: TextAlign.center,
         ),

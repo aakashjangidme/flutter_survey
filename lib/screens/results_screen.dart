@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_survey/constants/constants.dart';
+import 'package:flutter_survey/widgets/round_button.dart';
 
 class ResultScreen extends StatefulWidget {
   @override
@@ -23,14 +24,26 @@ class _ResultScreenState extends State<ResultScreen> {
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
               textAlign: TextAlign.center,
             ),
-            SizedBox(
-              height: 20,
-            ),
+            SizedBox(height: 20),
             Icon(
               Icons.check_circle_outline,
               size: 50,
               color: kPrimaryColor,
-            )
+            ),
+            SizedBox(height: 20),
+            RoundButon(
+              title: 'Go back',
+              onPressed: () {
+                Navigator.pushReplacementNamed(context, '/home');
+              },
+            ),
+            SizedBox(height: 20),
+            RoundButon(
+              title: 'Sign Out',
+              onPressed: () {
+                Navigator.pushReplacementNamed(context, '/');
+              },
+            ),
           ],
         )),
       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_survey/constants/constants.dart';
+
 import 'package:flutter_survey/widgets/round_button.dart';
 
 class LaunchScreen extends StatelessWidget {
@@ -20,7 +21,7 @@ Widget launchScreen(context) {
     width: double.infinity,
     margin: const EdgeInsets.all(16),
     child: Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         RichText(
@@ -36,16 +37,15 @@ Widget launchScreen(context) {
                 ),
                 TextSpan(text: ' to'),
                 TextSpan(
-                  text: '\nThe App',
+                  text: '\nThe Survey',
                   style: TextStyle(
+                    fontSize: 28,
                     color: kPrimaryColor,
                   ),
                 ),
               ]),
         ),
-        // SizedBox(
-        //   height: 50.0,
-        // ),
+        SizedBox(height: 20),
         RoundButon(
             title: "Continue",
             onPressed: () {
@@ -57,5 +57,5 @@ Widget launchScreen(context) {
 }
 
 void authScreen(context) {
-  Navigator.pushReplacementNamed(context, '/home');
+  Navigator.pushReplacementNamed(context, '/auth');
 }

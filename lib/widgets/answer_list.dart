@@ -12,7 +12,7 @@ class AnswerList extends StatelessWidget {
       child: Consumer<QuestionState>(
         builder: (context, ques, child) => ListView(
           padding: EdgeInsets.all(8.0),
-          children: ques.questions[ques.currentIndex].answertext
+          children: ques.questions[ques.currentIndex].answerText
               .map((answer) => RadioListTile(
                     groupValue: data.answers[data.currentIndex],
                     title: Text(

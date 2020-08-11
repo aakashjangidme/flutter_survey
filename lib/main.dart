@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_survey/constants/constants.dart';
+import 'package:flutter_survey/screens/auth_screen.dart';
 import 'package:flutter_survey/screens/home_screen.dart';
 import 'package:flutter_survey/screens/launch_screen.dart';
 import 'package:flutter_survey/providers/provider.dart';
@@ -21,7 +22,7 @@ class CounterApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Counter App',
         theme: ThemeData(
-          primarySwatch: Colors.pink,
+          primarySwatch: Colors.deepPurple,
           buttonTheme: ButtonThemeData(
             buttonColor: kPrimaryColor,
             shape: RoundedRectangleBorder(
@@ -36,6 +37,7 @@ class CounterApp extends StatelessWidget {
           '/home': (context) => HomeScreen(),
           '/result': (context) => ResultScreen(),
           '/login': (context) => LaunchScreen(),
+          '/auth': (context) => AuthScreen(),
         },
       ),
     );
