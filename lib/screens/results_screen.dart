@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_survey/constants/constants.dart';
+import 'package:flutter_survey/providers/auth_provider.dart';
 import 'package:flutter_survey/widgets/round_button.dart';
+import 'package:provider/provider.dart';
 
 class ResultScreen extends StatefulWidget {
   @override
@@ -41,12 +43,19 @@ class _ResultScreenState extends State<ResultScreen> {
             FlatButton(
               child: Text('Sign Out'),
               onPressed: () {
-                Navigator.pushReplacementNamed(context, '/');
+                _signOut();
               },
             ),
           ],
         )),
       ),
     );
+  }
+
+  void _signOut() async {
+    var auth = Provider.of<AuthProvider>(context, listen: false);
+
+    await auth.signOut();
+    Navigator.popAndPushNamed(context, '/');
   }
 }

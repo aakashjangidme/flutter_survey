@@ -20,41 +20,46 @@ Widget launchScreen(context) {
   return Container(
     height: MediaQuery.of(context).size.height,
     width: MediaQuery.of(context).size.width,
-    margin: const EdgeInsets.all(16),
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        ClipOval(
-          child: Image.asset(
-            'assets/images/welcome.png',
-            height: 200,
-            width: 200,
-            fit: BoxFit.cover,
-          ),
+    margin: const EdgeInsets.all(8),
+    child: Center(
+      child: SingleChildScrollView(
+        physics: NeverScrollableScrollPhysics(),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            ClipOval(
+              child: Image.asset(
+                'assets/images/welcome.png',
+                height: 200,
+                width: 200,
+                fit: BoxFit.cover,
+              ),
+            ),
+            SizedBox(height: 20),
+            Text(
+              'Welcome to the Survey App !',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 28),
+            ),
+            SizedBox(height: 20),
+            Text(
+              'This app can be intigrated as a module to another app!',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 16),
+            ),
+            SizedBox(
+              height: 30,
+            ),
+            SizedBox(height: 20),
+            RoundButon(
+                title: "Continue",
+                onPressed: () {
+                  authScreen(context);
+                }),
+          ],
         ),
-        SizedBox(height: 20),
-        Text(
-          'Welcome to the Survey App !',
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 28),
-        ),
-        SizedBox(height: 20),
-        Text(
-          'This app can be intigrated as a module to another app!',
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 16),
-        ),
-        SizedBox(
-          height: 30,
-        ),
-        SizedBox(height: 20),
-        RoundButon(
-            title: "Continue",
-            onPressed: () {
-              authScreen(context);
-            }),
-      ],
+      ),
     ),
   );
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_survey/constants/constants.dart';
+import 'package:flutter_survey/providers/auth_provider.dart';
 import 'package:flutter_survey/screens/auth_screen.dart';
 import 'package:flutter_survey/screens/home_screen.dart';
 import 'package:flutter_survey/screens/launch_screen.dart';
@@ -17,6 +18,9 @@ class CounterApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (_) => BaseProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => AuthProvider(),
         ),
       ],
       child: MaterialApp(

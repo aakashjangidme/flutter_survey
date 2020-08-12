@@ -6,13 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_survey/models/question_model.dart';
 
 class FirestoreService {
-  // final CollectionReference _usersCollectionReference =
-  //     Firestore.instance.collection('users');
   final CollectionReference _collectionReference =
       Firestore.instance.collection('questions');
-
-  // final StreamController<List<Post>> _postsController =
-  //     StreamController<List<Post>>.broadcast();
 
   Future getQuestionsOnceOff() async {
     try {
@@ -25,7 +20,6 @@ class FirestoreService {
             .toList();
       }
     } catch (e) {
-      // TODO: Find or create a way to repeat error handling without so much repeated code
       if (e is PlatformException) {
         return e.message;
       }

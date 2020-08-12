@@ -1,6 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_survey/constants/constants.dart';
+import 'package:flutter_survey/providers/auth_provider.dart';
 import 'package:flutter_survey/providers/provider.dart';
 import 'package:flutter_survey/widgets/round_button.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,8 +12,6 @@ class AuthScreen extends StatefulWidget {
 }
 
 enum FormType { login, register }
-
-final FirebaseAuth _auth = FirebaseAuth.instance;
 
 class _AuthScreenState extends State<AuthScreen> {
   @override
@@ -38,10 +36,6 @@ class _EmailPasswordFormState extends State<_EmailPasswordForm> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   FormType _formType = FormType.login;
-
-  bool _success;
-  String _userEmail;
-  //
 
   void registerWidget() {
     _formKey.currentState.reset();
@@ -100,48 +94,65 @@ class _EmailPasswordFormState extends State<_EmailPasswordForm> {
                       ),
                     ],
                   ),
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(8),
                   alignment: Alignment.center,
                 ),
-                TextFormField(
-                  controller: _emailController,
-                  decoration: const InputDecoration(labelText: 'Email'),
-                  validator: (String value) {
-                    if (value.isEmpty) {
-                      return 'Please enter some text';
-                    }
-                    return null;
-                  },
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: _emailController,
+                    decoration: const InputDecoration(
+                        prefixIcon: Icon(Icons.mail),
+                        border: OutlineInputBorder(),
+                        labelText: 'Email'),
+                    validator: (String value) {
+                      if (value.isEmpty) {
+                        return 'Please enter some text';
+                      }
+                      return null;
+                    },
+                  ),
                 ),
-                // SizedBox(height: 20),
-                TextFormField(
-                  controller: _passwordController,
-                  obscureText: true,
-                  decoration: const InputDecoration(labelText: 'Password'),
-                  validator: (String value) {
-                    if (value.isEmpty) {
-                      return 'Please enter some text';
-                    }
-                    return null;
-                  },
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: _passwordController,
+                    obscureText: true,
+                    decoration: const InputDecoration(
+                        prefixIcon: Icon(Icons.lock),
+                        border: OutlineInputBorder(),
+                        labelText: 'Password'),
+                    validator: (String value) {
+                      if (value.isEmpty) {
+                        return 'Please enter some text';
+                      }
+                      return null;
+                    },
+                  ),
                 ),
                 SizedBox(height: 20),
-
+                //login/signup button here
                 Container(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   alignment: Alignment.center,
-                  child: RoundButon(
-                    onPressed: () async {
-                      //
-                      if (_formKey.currentState.validate()) {
-                        _formType == FormType.login
-                            ? _signInWithEmailAndPassword()
-                            : _register();
-                        //
-                      }
-                      FocusScope.of(context).unfocus();
-                    },
-                    title: _formType == FormType.login ? 'Login' : 'Register',
+                  child: Consumer<AuthProvider>(
+                    builder: (context, auth, child) =>
+                        auth.status == Status.Authenticating
+                            ? CircularProgressIndicator()
+                            : RoundButon(
+                                onPressed: () async {
+                                  //
+                                  if (_formKey.currentState.validate()) {
+                                    _formType == FormType.login
+                                        ? _signInWithEmailAndPassword()
+                                        : _register();
+                                  }
+                                  FocusScope.of(context).unfocus();
+                                },
+                                title: _formType == FormType.login
+                                    ? 'Login'
+                                    : 'Register',
+                              ),
                   ),
                 ),
 
@@ -179,68 +190,46 @@ class _EmailPasswordFormState extends State<_EmailPasswordForm> {
     super.dispose();
   }
 
-//signIn
+  //with Provider
+
   void _signInWithEmailAndPassword() async {
-    final FirebaseUser user = (await _auth.signInWithEmailAndPassword(
-      email: _emailController.text,
-      password: _passwordController.text,
-    ))
-        .user;
-    if (user != null) {
-      print(user);
-      setState(() {
-        _success = true;
-        _userEmail = user.email;
-      });
-      Navigator.pushReplacementNamed(context, '/home', arguments: _userEmail);
+    final auth = Provider.of<AuthProvider>(context, listen: false);
+    await auth.signInEmailPass(
+      _emailController.text,
+      _passwordController.text,
+    );
+
+    if (auth.getCurrentUser != null) {
+      auth.authSuccess();
+      auth.getUserEmail(_emailController.text);
+
+      Navigator.pushReplacementNamed(context, '/home');
     } else {
-      _success = false;
+      auth.authFailed();
     }
   }
 
 //register
   void _register() async {
-    final FirebaseUser user = (await _auth.createUserWithEmailAndPassword(
-      email: _emailController.text,
-      password: _passwordController.text,
-    ))
-        .user;
+    final auth = Provider.of<AuthProvider>(context, listen: false);
+    await auth.createUserEmailPass(
+      _emailController.text,
+      _passwordController.text,
+    );
 
-    if (user != null) {
-      setState(() {
-        _success = true;
-        _userEmail = user.email;
-      });
-      showDialog(
-          context: context,
-          builder: (_) => AlertDialog(
-                title: Text("Hello $_userEmail"),
-                content: Text("Press continue to go to survey !"),
-                actions: <Widget>[
-                  FlatButton(
-                    child: Text('Continue'),
-                    onPressed: () {
-                      Navigator.pushReplacementNamed(context, '/home',
-                          arguments: _userEmail);
-                    },
-                  ),
-                  FlatButton(
-                    child: Text('Close'),
-                    onPressed: () {
-                      Navigator.popAndPushNamed(context, '/');
-                    },
-                  ),
-                ],
-              ));
+    if (auth.getCurrentUser != null) {
+      auth.authSuccess();
+      auth.getUserEmail(_emailController.text);
+      Navigator.pushReplacementNamed(context, '/home');
     } else {
-      _success = false;
+      auth.authFailed();
     }
   }
 }
 
 _buildFooter() {
   return Column(
-    mainAxisAlignment: MainAxisAlignment.center,
+    mainAxisAlignment: MainAxisAlignment.end,
     crossAxisAlignment: CrossAxisAlignment.center,
     children: <Widget>[
       Text(
@@ -248,7 +237,10 @@ _buildFooter() {
         textAlign: TextAlign.center,
         style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
       ),
-      Text('\n© 2020 Survey App'),
+      Text(
+        '\n© 2020 Survey App',
+        textAlign: TextAlign.center,
+      ),
     ],
   );
 }

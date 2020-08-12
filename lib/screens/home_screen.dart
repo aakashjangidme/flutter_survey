@@ -1,20 +1,18 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_survey/providers/auth_provider.dart';
 import 'package:flutter_survey/providers/provider.dart';
 import 'package:flutter_survey/widgets/question_counter.dart';
 import 'package:flutter_survey/widgets/answer_list.dart';
 import 'package:flutter_survey/widgets/question_text.dart';
 import 'package:flutter_survey/widgets/round_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
-
-// do it with the provider now
-final FirebaseAuth _auth = FirebaseAuth.instance;
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
@@ -27,18 +25,21 @@ class _HomeScreenState extends State<HomeScreen> {
 
   _asyncMethod() async {
     Provider.of<BaseProvider>(context, listen: false).clearSelection();
-    Provider.of<BaseProvider>(context, listen: false).loadQuestionsList();
+    // Provider.of<BaseProvider>(context, listen: false).loadQuestionsList();
   }
 
   @override
   Widget build(BuildContext context) {
-    var _email = ModalRoute.of(context).settings.arguments;
-    print('Successfully signed in as ' + '$_email');
+    var user = Provider.of<AuthProvider>(context, listen: true);
+    print('Successfully signed in as ' + ' ${user.userEmail} ');
 //Todo: Set Method to show Welcome Email.
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: Text('Survey App'),
+        title: Text(
+          'Survey App',
+          textAlign: TextAlign.center,
+        ),
         actions: <Widget>[
           //Todo : Change icons fontAwesome lib
           IconButton(
@@ -53,7 +54,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _signOut() async {
-    await _auth.signOut();
+    var auth = Provider.of<AuthProvider>(context, listen: false);
+
+    await auth.signOut();
     Navigator.popAndPushNamed(context, '/');
   }
 }
@@ -95,6 +98,34 @@ Widget homeScreenBody(context) {
             height: 30,
           ),
 
+          SizedBox(height: 15),
+
+          // Text(
+          //   'Hello, ${Provider.of<AuthProvider>(context, listen: false).userEmail}',
+          //   style: TextStyle(fontSize: 18),
+          // ),
+
+          RichText(
+            textAlign: TextAlign.center,
+            text: TextSpan(
+                text: 'Hello,\n',
+                style: GoogleFonts.raleway(
+                  fontSize: 18,
+                  color: Colors.black,
+                  fontWeight: FontWeight.w500,
+                ),
+                children: <TextSpan>[
+                  TextSpan(
+                    text:
+                        ' ${Provider.of<AuthProvider>(context, listen: false).userEmail}',
+                    style: GoogleFonts.raleway(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ]),
+          ),
+
           SizedBox(height: 30),
 
           Card(
@@ -114,7 +145,7 @@ Widget homeScreenBody(context) {
             ),
           ),
 
-          SizedBox(height: 100),
+          SizedBox(height: 50),
 
           Consumer<BaseProvider>(
             builder: (context, value, child) => RoundButon(
@@ -126,7 +157,6 @@ Widget homeScreenBody(context) {
               },
             ),
           ),
-          // RoundButon(title: 'press me', onPressed: ()=>_onPressed(),)
         ],
       ),
     ),
